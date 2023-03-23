@@ -64,30 +64,27 @@ namespace Microsoft.Azure.Batch.Samples.TextSearch
                             columnNames.Clear();
                             CreateIsFound = false;
                         }
-                        //else//Still parsing columns
-                          //  columnNames.AddRange(m?.Cast<Match>().Select(t => t.Groups[1].Value)?.ToArray<string>());
+                        
                     }
                     if (CreateIsFound || IsCreate(line))
                     {
                         //start parsing the column names for the CREATE Table info. 
                         CreateIsFound = true;
-                        // string regex = @"[""`]([A-Za-z_]+)[""`]";
+                        
                         // string regex = @"(?!PRIMARY KEY|KEY).*?\(*[""`](?<ext>[A-Za-z_]+)(?!PRIMARY KEY|KEY).*?\(*[""`][,\n]+";
                         string regex = @"([`""](\w+)[`""].*?[,\n])+";
-                        // string regex = @"(?!PRIMARY KEY|KEY)[""`]([A-Za-z_]+)[`""]";
-                        //MatchCollection m = Regex.Matches(line, regex, RegexOptions.IgnoreCase);
-
+                       
                         foreach (string str in line.Split(','))
                         {
 
                             if (!str.Contains("KEY"))
                             {
-                                //string regex2 = @"[""`]([A-Za-z_]+)[""`]";
+                                
                                 string regex2 = @"[`""]([^""`]+)[`""]";
                                 MatchCollection m2 = Regex.Matches(str, regex2, RegexOptions.IgnoreCase);
                                 string[] array = m2?.Cast<Match>().Select(t => t.Groups[1].Value)?.ToArray<string>();
                                 columnNames.AddRange(array);
-                                //columnNames.Add(match);
+                                
                             }
                             else
                                 break;
@@ -112,8 +109,8 @@ namespace Microsoft.Azure.Batch.Samples.TextSearch
                             }
                             int count = columns.Length;
                             for (int j = 0; j < values.Length; j++)
-                            {
-                                string output = values[j];
+                            {                              
+                                string output = values[j].Replace("NULL", "");
                                 Console.WriteLine(output);
 
                             }
