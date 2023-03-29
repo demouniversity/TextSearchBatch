@@ -111,7 +111,11 @@ namespace Microsoft.Azure.Batch.Samples.TextSearch
                             for (int j = 0; j < values.Length; j++)
                             {                              
                                 string output = values[j].Replace("NULL", "");
-                                Console.WriteLine(output);
+
+                                //Removes binary unicode values and replace with numerical/decimal
+                                string binary1 = Regex.Replace(output, @"_binary\s*['][\u0001][']", "1");
+                                string binary2 = Regex.Replace(binary1, @"_binary\s*['][\u0000][']", "0");
+                                Console.WriteLine(binary2);
 
                             }
 
